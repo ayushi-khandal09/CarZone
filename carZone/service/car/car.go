@@ -25,7 +25,7 @@ func (s *CarService) GetCarById(ctx context.Context, id string) (*models.Car, er
 	return &car, nil
 }
 
-func (s *CarService) GetCarByBrand(ctx context.Context, brand string, isEngine bool) ([]models.Car, error) {
+func (s *CarService) GetCarsByBrand(ctx context.Context, brand string, isEngine bool) ([]models.Car, error) {
 	cars, err := s.store.GetCarByBrand(ctx, brand, isEngine)
 	if err != nil {
 		return nil, err
