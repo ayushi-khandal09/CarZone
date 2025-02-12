@@ -37,7 +37,7 @@ func (e EngineStore) EngineById(ctx context.Context, id string) (models.Engine, 
 		}
 	}()
 
-	err = tx.QueryRowContext(ctx, "SELECT id, displacement, no_of_cyclinders, car_range FROM engine WHERE id = $1", id).Scan(
+	err = tx.QueryRowContext(ctx, "SELECT id, displacement, no_of_cylinders, car_range FROM engine WHERE id = $1", id).Scan(
 		&engine.EngineID, &engine.Displacement, &engine.NoOfCyclinders, &engine.CarRange,
 	)
 
@@ -70,17 +70,17 @@ func (e EngineStore) EngineCreate(ctx context.Context, engineReq *models.EngineR
 	engineID := uuid.New()
 
 	_, err = tx.ExecContext(ctx,
-	"INSERT INTO engine (id, displacement, no_of_cyclinders, car_range) VALUES ($1, $2, $3, $4)", engineID, engineReq.Displacement,
-     engineReq.NoOfCyclinders, engineReq.CarRange)
-	
+		"INSERT INTO engine (id, displacement, no_of_cylinders, car_range) VALUES ($1, $2, $3, $4)", engineID, engineReq.Displacement,
+		engineReq.NoOfCyclinders, engineReq.CarRange)
+
 	if err != nil {
 		return models.Engine{}, err
 	}
 	engine := models.Engine{
-		EngineID: engineID,
-		Displacement: engineReq.Displacement,
+		EngineID:       engineID,
+		Displacement:   engineReq.Displacement,
 		NoOfCyclinders: engineReq.NoOfCyclinders,
-		CarRange: engineReq.CarRange,
+		CarRange:       engineReq.CarRange,
 	}
 	return engine, nil
 }
@@ -88,7 +88,7 @@ func (e EngineStore) EngineCreate(ctx context.Context, engineReq *models.EngineR
 func (e EngineStore) EngineUpdate(ctx context.Context, id string, engineReq *models.EngineRequest) (models.Engine, error) {
 	engineID, err := uuid.Parse(id)
 	if err != nil {
-		return models.Engine{}, fmt.Errorf("Invalid Engine ID: %w",err)
+		return models.Engine{}, fmt.Errorf("Invalid Engine ID: %w", err)
 	}
 
 	tx, err := e.db.BeginTx(ctx, nil)
@@ -108,8 +108,8 @@ func (e EngineStore) EngineUpdate(ctx context.Context, id string, engineReq *mod
 	}()
 
 	results, err := tx.ExecContext(ctx,
-	"UPDATE engine SET displacement = $1, no_of_cyclinders = $2, car_range = $3 WHERE id = $4", engineReq.Displacement, 
-	engineReq.NoOfCyclinders,engineReq.CarRange, engineID)
+		"UPDATE engine SET displacement = $1, no_of_cylinders = $2, car_range = $3 WHERE id = $4", engineReq.Displacement,
+		engineReq.NoOfCyclinders, engineReq.CarRange, engineID)
 
 	if err != nil {
 		return models.Engine{}, err
@@ -124,10 +124,10 @@ func (e EngineStore) EngineUpdate(ctx context.Context, id string, engineReq *mod
 	}
 
 	engine := models.Engine{
-		EngineID: engineID,
-		Displacement: engineReq.Displacement,
+		EngineID:       engineID,
+		Displacement:   engineReq.Displacement,
 		NoOfCyclinders: engineReq.NoOfCyclinders,
-		CarRange: engineReq.CarRange,
+		CarRange:       engineReq.CarRange,
 	}
 
 	return engine, nil
@@ -151,7 +151,7 @@ func (e EngineStore) EngineDelete(ctx context.Context, id string) (models.Engine
 		}
 	}()
 
-	err = tx.QueryRowContext(ctx, "SELECT id, displacement, no_of_cyclinders, car_range FROM engine WHERE id = $1", id).Scan(
+	err = tx.QueryRowContext(ctx, "SELECT id, displacement, no_of_cylinders, car_range FROM engine WHERE id = $1", id).Scan(
 		&engine.EngineID, &engine.Displacement, &engine.NoOfCyclinders, &engine.CarRange,
 	)
 
@@ -161,9 +161,9 @@ func (e EngineStore) EngineDelete(ctx context.Context, id string) (models.Engine
 		}
 		return engine, err
 	}
-	
+
 	result, err := tx.ExecContext(ctx,
-	"DELETE FROM engine WHERE id = $1",id)
+		"DELETE FROM engine WHERE id = $1", id)
 	if err != nil {
 		return models.Engine{}, err
 	}
